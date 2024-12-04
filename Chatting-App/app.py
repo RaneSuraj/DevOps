@@ -44,6 +44,15 @@ def submit():
         return jsonify({'message': new_message})
     return jsonify({"error": "No message provided"}), 400
 
+@app.route('/clear', methods=['POST'])
+def clear_chat():
+    cur = mysql.connection.cursor()
+    cur.execute('DELETE FROM messages')
+    mysql.connection.commit()
+    cur.close()
+    return jsonify({"success":True})
+
+
 if __name__ == '__main__':
     init_db()
     app.run(host='0.0.0.0', port=5000, debug=True)
